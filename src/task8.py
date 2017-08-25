@@ -3,8 +3,6 @@ from html.parser import HTMLParser
 
 
 class EntityParser(HTMLParser):
-    """Parser for entity tags in a sentence.
-    """
     TAG_E1 = 'e1'
     TAG_E2 = 'e2'
 
@@ -48,7 +46,15 @@ def parse_sentence(s):
     return p.get_data()
 
 
-def load_data(rows):
+def split_relation_and_direction(r):
+    O = 'Other'
+    if r == O:
+        return r, None
+    else:
+        return  r[:-7], r[-7:]
+
+
+def load_dataset(rows, split=False):
     rows = iter(rows)
     while True:
         try:
@@ -59,7 +65,7 @@ def load_data(rows):
         relation = next(rows).rstrip('\n')
         next(rows) # Comment
         next(rows) # Blank line
-        print(e1, e2, sentence, relation)
+        print(e1, e2, sentence, split_relation_and_direction(relation))
 
 
 if __name__ == '__main__':
@@ -67,7 +73,7 @@ if __name__ == '__main__':
     TEST_FILE = 'data/TEST_FILE_FULL.TXT'
 
     with open(TRAIN_FILE, 'r', encoding='utf-8') as fd:
-        load_data(fd)
+        load_dataset(fd)
 
     with open(TEST_FILE, 'r', encoding='utf-8') as fd:
-        load_data(fd)
+        load_dataset(fd)

@@ -16,6 +16,17 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(s[e1[0]:e1[1]+1], 'dddd')
         self.assertEqual(s[e2[0]:e2[1]+1], 'g')
 
+    def test_split_relation_and_direction(self):
+        r = 'Instrument-Agency(e2,e1)'
+        relation, direction = task8.split_relation_and_direction(r)
+        self.assertEqual('Instrument-Agency', relation)
+        self.assertEqual('(e2,e1)', direction)
+
+        r = 'Other'
+        relation, direction = task8.split_relation_and_direction(r)
+        self.assertEqual('Other', relation)
+        self.assertEqual(None, direction)
+
 
 if __name__ == '__main__':
     unittest.main()
