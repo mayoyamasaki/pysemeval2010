@@ -68,3 +68,7 @@ result/
 ├── task8_test.pickle
 └── task8_train.pickle
 ```
+
+## Test
+We use [glove.6B.zip dataset](https://nlp.stanford.edu/projects/glove/) for test.
+This dataset is made available under the Public Domain Dedication and License v1.0 whose full text can be found at: [http://www.opendatacommons.org/licenses/pddl/1.0/](http://www.opendatacommons.org/licenses/pddl/1.0/).  
