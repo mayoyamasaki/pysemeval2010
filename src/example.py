@@ -6,8 +6,8 @@ import tensorflow as tf
 from embeddings import Embeddings
 
 
-num_features = 50
-learning_rate = 0.001
+num_features = 100
+learning_rate = 0.12
 batch_size = 20
 num_steps = 2000
 
@@ -16,7 +16,7 @@ num_classes = 19
 dropout = 0.75 # Dropout, probability to keep units
 
 
-WE = Embeddings('data/glove.6B/sampled-glove.6B.50d.txt', num_features)
+WE = Embeddings('data/glove.6B/glove.6B.100d.txt', num_features)
 
 
 def fofe(sent, emb, num_features, alpha=0.5):
@@ -46,16 +46,11 @@ with open('result/task8_test.pickle', 'rb') as fd:
     test_target = [r + d if d is not None else r for r, d in test_target]
     X_test = to_X(test_data, WE, num_features)
 
-label2index = {l:i for i, l in enumerate(set(train_target + test_target))}
 
-#y_train = np.array([[0 if i != label2index[l] else 1
-#                     for i in range(len(label2index.keys()))]
-#                    for l in train_target])
-#y_test = np.array([[0 if i != label2index[l] else 1
-#                    for i in range(len(label2index.keys()))]
-#                   for l in test_target])
+label2index = {l:i for i, l in enumerate(set(train_target + test_target))}
 y_train = np.array([label2index[l] for l in train_target])
 y_test = np.array([label2index[l] for l in test_target])
+
 
 def conv_net(x_dict, n_classes, dropout, reuse, is_training):
     # Define a scope for reusing the variables
