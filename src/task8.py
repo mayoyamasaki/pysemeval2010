@@ -1,5 +1,6 @@
 import sys
 import pickle
+import itertools
 from html.parser import HTMLParser
 
 from pycorenlp import StanfordCoreNLP
@@ -52,14 +53,70 @@ def parse_sentence(s):
     return p.get_data()
 
 
+def search_sdp(e1, e2, sentence, dependencies):
+
+    g = [[] for _ in range(len(sentence))]
+    edges = {}
+    for dep in dependencies:
+        src, dst = dep['dependent']-1, dep['governor']-1
+        if src == -1 or dst == -1: continue
+        g[src].append(dst)
+        g[dst].append(src)
+        edges[tuple(sorted([src, dst]))] = dep
+
+    def bfs(start, end):
+        queue = [[start]]
+        while queue:
+            path = queue.pop(0)
+            n = path[len(path) - 1]
+            if n == end:
+                return path
+            else:
+                for n2 in g[n]:
+                    if n2 not in path:
+                        new_path = path.copy()
+                        new_path.append(n2)
+                        queue.append(new_path)
+
+    sdp = None
+    stkn, dtkn = None, None
+    for t1, t2 in itertools.product(e1, e2):
+        dp = bfs(t2, t1)
+        if sdp is None or len(sdp) > len(dp):
+            sdp = dp
+            stkn = sentence[t2]
+            dtkn = sentence[t1]
+
+    result = []
+    for src, dst in zip(sdp, sdp[1:]):
+        dep = edges[tuple(sorted([src, dst]))]
+        if dep['governorGloss'] == stkn:
+            result.append(dep['governorGloss'])
+            stkn = dep['dependentGloss']
+        elif dep['dependentGloss'] == stkn:
+            result.append(dep['dependentGloss'])
+            stkn = dep['governorGloss']
+        else:
+            raise Exception('Failed back trace.')
+        result.append(dep['dep'])
+    result.append(dtkn)
+    return result
+
+
 def annotate(e1, e2, s):
     res = CNLP.annotate(s, properties={
-        #TODO 'annotators': 'tokenize,pos,depparse,ner',
-        'annotators': 'tokenize',
+        'annotators': 'tokenize,depparse',
         'outputFormat': 'json'
     })
 
-    tokens = res['tokens']
+    if len(res['sentences']) != 1:
+        tokens = []
+        for sentence in res['sentences']:
+            tokens.extend(sentence['tokens'])
+    else:
+        sentence = res['sentences'][0]
+        tokens = sentence['tokens']
+
     words = []
     _e1 = []
     _e2 = []
@@ -72,12 +129,16 @@ def annotate(e1, e2, s):
             _e1.append(i)
         if (e2[0] <= b and e <= e2[1]+1) or (b <= e2[0] and e2[1]+1 <= e):
             _e2.append(i)
+    e1, e2 = _e1, _e2
 
-    #print(s, ' : ', s[e1[0]:e1[1]+1], s[e2[0]:e2[1]+1])
-    #print(_e1, _e2)
-    #print(words, ' : ', words[_e1[0]:_e1[-1]+1], words[_e2[0]:_e2[-1]+1])
 
-    return (_e1, _e2, words)
+    if len(res['sentences']) != 1:
+        sdp = None
+    else:
+        dependencies = sentence['basicDependencies']
+        sdp = search_sdp(e1, e2, words, dependencies)
+
+    return (e1, e2, words, sdp)
 
 
 def split_relation_and_direction(r):

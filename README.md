@@ -1,7 +1,9 @@
 ## PySemEval2010
 This is a yet another dataset of SemEval2010 task 8.  
-Data is tuple of words, entity1 indexes and entity2 indexes.  
-Target is tuple of relation class and direction.
+
+- Data is tuple of entity1 indexes and entity2 indexes, words and SDP(shortest dependency path).
+  - 4 training and 1 testing sentences are failed to parse dependencies, therefore I set the None.
+- Target is tuple of relation class and direction.
 
 
 ## Example
@@ -30,7 +32,8 @@ print(train_data[0], train_target[0])
 #    'configuration',
 #    'of',
 #    'antenna',
-#    'elements']),
+#    'elements'],
+#   ['elements', 'nmod', 'configuration']),
 #  ('Component-Whole', '(e2,e1)'))
 
 print(train_data[1], train_target[1])
@@ -45,7 +48,8 @@ print(train_data[1], train_target[1])
 #    'bound',
 #    'into',
 #    'the',
-#    'cradle']),
+#    'cradle'],
+#   ['cradle', 'nmod', 'bound', 'conj', 'wrapped', 'nsubjpass', 'child']),
 #  ('Other', None))
 ```
 

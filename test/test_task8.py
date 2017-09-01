@@ -27,6 +27,34 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual('Other', relation)
         self.assertEqual(None, direction)
 
+    def test_search_sdp(self):
+        dependencies = [{
+            "governorGloss": "ROOT",
+            "governor": 0,
+            "dependent": 6,
+            "dep": "ROOT",
+            "dependentGloss": "has"
+        }, {
+            "governorGloss": "elements",
+            "governor": 16,
+            "dependent": 14,
+            "dep": "case",
+            "dependentGloss": "of"
+        }, {
+            "governorGloss": "configuration",
+            "governor": 13,
+            "dependent": 16,
+            "dep": "nmod:of",
+            "dependentGloss": "elements"
+        }]
+        words = ['The', 'system', 'as', 'described', 'above', 'has',
+                 'its', 'greatest', 'application', 'in', 'an', 'arrayed',
+                 'configuration', 'of', 'antenna', 'elements']
+        e1, e2 = [12], [15]
+        expect = ['elements', 'nmod:of', 'configuration']
+        real = task8.search_sdp(e1, e2, words, dependencies)
+        self.assertEqual(expect, real)
+
 
 if __name__ == '__main__':
     unittest.main()
