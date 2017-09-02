@@ -2,7 +2,7 @@
 This is a yet another dataset of SemEval2010 task 8.  
 
 - Data is tuple of entity1 indexes and entity2 indexes, words and SDP(shortest dependency path).
-  - 4 training and 1 testing sentences are failed to parse dependencies, therefore I set the None.
+  - 4 training and 1 testing sentences are failed to parse dependencies. CoreNLP returns multiple sentences from a sentence, therefore I set the None value as SDP.
 - Target is tuple of relation class and direction.
 
 
