@@ -11,13 +11,13 @@ This is a yet another dataset of SemEval2010 task 8.
 ## Example
 
 ```py
-import pickle
+import json
 
-with open('result/task8_train.pickle', 'rb') as fd:
-    train_data, train_target = pickle.load(fd)
+with open('result/task8_train.json', 'r', encoding='utf-8') as fd:
+    train_data, train_target = json.loads(fd.read())
 
 print(train_data[0], train_target[0])
-# (([12],
+# ([[12],
 #   [15],
 #   ['The',
 #    'system',
@@ -35,11 +35,11 @@ print(train_data[0], train_target[0])
 #    'of',
 #    'antenna',
 #    'elements'],
-#   ['elements', 'nmod', 'configuration']),
-#  ('Component-Whole', '(e2,e1)'))
+#   ['elements', 'nmod', 'configuration']],
+#  ['Component-Whole', '(e2,e1)'])
 
 print(train_data[1], train_target[1])
-#  (([1],
+#  ([[1],
 #   [9],
 #   ['The',
 #    'child',
@@ -51,8 +51,8 @@ print(train_data[1], train_target[1])
 #    'into',
 #    'the',
 #    'cradle'],
-#   ['cradle', 'nmod', 'bound', 'conj', 'wrapped', 'nsubjpass', 'child']),
-#  ('Other', None))
+#   ['cradle', 'nmod', 'bound', 'conj', 'wrapped', 'nsubjpass', 'child']],
+#  ['Other', None])
 ```
 
 ## Build
@@ -71,8 +71,8 @@ print(train_data[1], train_target[1])
 $ python3 src/task8.py
 $ tree result/
 result/
-├── task8_test.pickle
-└── task8_train.pickle
+├── task8_test.json
+└── task8_train.json
 ```
 
 ## Test

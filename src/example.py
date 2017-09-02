@@ -1,4 +1,6 @@
-import pickle
+# [NOTE] Under development
+
+import json
 
 import numpy as np
 import tensorflow as tf
@@ -36,13 +38,13 @@ def to_X(data, emb, num_features):
     return X
 
 
-with open('result/task8_train.pickle', 'rb') as fd:
-    train_data, train_target = pickle.load(fd)
+with open('result/task8_train.json', 'r', encoding='utf-8') as fd:
+    train_data, train_target = json.loads(fd.read())
     train_target = [r + d if d is not None else r for r, d in train_target]
     X_train = to_X(train_data, WE, num_features)
 
-with open('result/task8_test.pickle', 'rb') as fd:
-    test_data, test_target = pickle.load(fd)
+with open('result/task8_test.json', 'r', encoding='utf-8') as fd:
+    train_data, train_target = json.loads(fd.read())
     test_target = [r + d if d is not None else r for r, d in test_target]
     X_test = to_X(test_data, WE, num_features)
 

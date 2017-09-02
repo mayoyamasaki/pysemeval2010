@@ -1,6 +1,6 @@
 import sys
-import pickle
 import itertools
+import json
 from html.parser import HTMLParser
 
 from pycorenlp import StanfordCoreNLP
@@ -179,12 +179,12 @@ if __name__ == '__main__':
     with open(TRAIN_FILE, 'r', encoding='utf-8') as fd:
         train_data, train_target = load_dataset(fd)
     train_data = [annotate(e1, e2, s) for e1, e2, s in train_data]
-    with open('result/task8_train.pickle', 'wb') as fd:
-        pickle.dump((train_data, train_target), fd)
+    with open('result/task8_train.json', 'w', encoding='utf-8') as fd:
+        fd.write(json.dumps((train_data, train_target)))
 
     with open(TEST_FILE, 'r', encoding='utf-8') as fd:
         test_data, test_target = load_dataset(fd)
     test_data = [annotate(e1, e2, s) for e1, e2, s in test_data]
-    with open('result/task8_test.pickle', 'wb') as fd:
-        pickle.dump((test_data, test_target), fd)
+    with open('result/task8_test.json', 'w', encoding='utf-8') as fd:
+        fd.write(json.dumps((test_data, test_target)))
 
