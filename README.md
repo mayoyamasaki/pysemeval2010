@@ -1,4 +1,6 @@
-## PySemEval2010
+## PySemEval2010 
+[![Build Status](https://travis-ci.org/mayoyamasaki/pysemeval2010.svg?branch=master)](https://travis-ci.org/mayoyamasaki/pysemeval2010)
+
 This is a yet another dataset of SemEval2010 task 8.  
 
 - Data is tuple of entity1 indexes and entity2 indexes, words and SDP(shortest dependency path).
