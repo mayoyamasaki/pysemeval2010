@@ -180,11 +180,11 @@ if __name__ == '__main__':
         train_data, train_target = load_dataset(fd)
     train_data = [annotate(e1, e2, s) for e1, e2, s in train_data]
     with open('result/task8_train.json', 'w', encoding='utf-8') as fd:
-        fd.write(json.dumps((train_data, train_target)))
+        fd.write(json.dumps((train_data, train_target), sort_keys=True, indent=4))
 
     with open(TEST_FILE, 'r', encoding='utf-8') as fd:
         test_data, test_target = load_dataset(fd)
     test_data = [annotate(e1, e2, s) for e1, e2, s in test_data]
     with open('result/task8_test.json', 'w', encoding='utf-8') as fd:
-        fd.write(json.dumps((test_data, test_target)))
+        fd.write(json.dumps((test_data, test_target), sort_keys=True, indent=4))
 
